@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrabIt - Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0a1f16",
+                        "tertiary": "#a5ccdf",
+                        "on-tertiary": "#073543",
+                        "primary-container": "#26a37a",
+                        "primary-fixed-dim": "#68dbae",
+                        "surface-container-low": "#191c1b",
+                        "on-primary-container": "#003121",
+                        "tertiary-fixed-dim": "#a5ccdf",
+                        "surface-tint": "#68dbae",
+                        "on-tertiary-fixed": "#001f29",
+                        "surface-variant": "#323534",
+                        "surface-container-lowest": "#0c0f0e",
+                        "surface-bright": "#373a39",
+                        "on-secondary-fixed-variant": "#364b40",
+                        "background": "#111413",
+                        "secondary": "#b4ccbd",
+                        "secondary-fixed-dim": "#b4ccbd",
+                        "surface-dim": "#111413",
+                        "inverse-primary": "#006c4e",
+                        "primary-fixed": "#86f8c9",
+                        "inverse-on-surface": "#2e3130",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#323534",
+                        "secondary-container": "#3b5045",
+                        "primary": "#68dbae",
+                        "outline-variant": "#3d4943",
+                        "on-surface": "#e1e3e1",
+                        "tertiary-fixed": "#c1e8fb",
+                        "on-tertiary-fixed-variant": "#244c5b",
+                        "on-secondary": "#20352a",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e1e3e1",
+                        "on-primary-fixed-variant": "#00513a",
+                        "secondary-fixed": "#d0e8d9",
+                        "surface": "#111413",
+                        "outline": "#87948c",
+                        "on-background": "#e1e3e1",
+                        "on-primary": "#003827",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#282b29",
+                        "on-surface-variant": "#bccac1",
+                        "on-tertiary-container": "#002e3c",
+                        "on-primary-fixed": "#002115",
+                        "tertiary-container": "#7096a7",
+                        "on-secondary-container": "#a9c1b3",
+                        "surface-container": "#1d201f",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-tablet": "24px",
+                        "stack-xl": "24px",
+                        "margin-mobile": "16px",
+                        "stack-lg": "16px",
+                        "stack-md": "8px",
+                        "stack-sm": "4px",
+                        "gutter": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Roboto Flex"],
+                        "label-lg": ["Roboto Flex"],
+                        "body-lg": ["Roboto Flex"],
+                        "headline-lg-mobile": ["Roboto Flex"],
+                        "label-md": ["Roboto Flex"],
+                        "headline-lg": ["Roboto Flex"],
+                        "body-md": ["Roboto Flex"],
+                        "title-lg": ["Roboto Flex"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "400" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, 
+                theme('colors.surface-container-low') 0%, 
+                theme('colors.surface-container-high') 50%, 
+                theme('colors.surface-container-low') 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .loader {
+            border: 3px solid theme('colors.surface-container-high');
+            border-top: 3px solid theme('colors.primary');
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24 md:pb-0 font-body-md text-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-surface dark:bg-surface text-primary dark:text-primary font-title-lg text-title-lg bg-surface-container dark:bg-surface-container flat no shadows flex justify-between items-center px-margin-mobile w-full h-16 sticky z-40">
+<button aria-label="menu" class="hover:bg-surface-variant/50 dark:hover:bg-surface-variant/50 rounded-full transition-colors duration-200 active:scale-95 p-2 flex items-center justify-center text-on-surface dark:text-on-surface">
+<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+</button>
+<div class="font-display-lg text-headline-lg-mobile text-primary dark:text-primary font-bold tracking-tight">
+            GrabIt
+        </div>
+<button aria-label="settings" class="hover:bg-surface-variant/50 dark:hover:bg-surface-variant/50 rounded-full transition-colors duration-200 active:scale-95 p-2 flex items-center justify-center text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="settings">settings</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-4xl mx-auto px-margin-mobile md:px-margin-tablet pt-stack-xl flex flex-col gap-stack-xl">
+<!-- Video Preview Section -->
+<section class="flex flex-col gap-stack-lg animate-[fadeIn_0.5s_ease-out]">
+<!-- Video Player/Thumbnail -->
+<div class="relative w-full aspect-video rounded-xl bg-surface-container overflow-hidden group shadow-lg ring-1 ring-outline-variant/30">
+<img class="w-full h-full object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100" data-alt="A dark mode UI illustration of a dynamic, high-speed media download interface. A blurred, abstract background resembling a fast-moving data stream in deep teal and charcoal tones. The main focus is a high-fidelity video thumbnail mockup with glowing edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALLoXJKm4pqyJ1LLI4gsmhhsAaGAPihfoXMhu7gp6fiTmQ9ZbSHMyzWxtgyg9YWpEjSxT_T4LqzU1eFU476-53zUVDz0QIlAlGgxGh_1AMzLW2b8IljwtMPuG2HxnW67gM9PowyEJtH1k-RdMI3EVqsOfNi-OLHwFiBaA2NdAp6w1Tow9xkO9evrDt1rGtOJd42PuhrcUDQylDFbJELMkj2IHvdlFNzYdmuTjWneIuu1AInd6nr6L5rw"/>
+<!-- Play Overlay -->
+<div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/30">
+<button class="bg-primary text-on-primary w-16 h-16 rounded-full flex items-center justify-center shadow-lg transform transition-transform duration-300 hover:scale-110 active:scale-95 hover:shadow-primary/30">
+<span class="material-symbols-outlined text-4xl ml-1" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Duration Badge -->
+<div class="absolute bottom-3 right-3 bg-surface-container-highest/90 backdrop-blur-sm text-on-surface px-2 py-1 rounded-md font-label-md text-label-md border border-outline-variant/50">
+                    12:45
+                </div>
+</div>
+<!-- Video Metadata -->
+<div class="flex flex-col gap-stack-md px-2">
+<h1 class="font-title-lg text-title-lg text-on-surface leading-tight line-clamp-2">
+                    Advanced CSS Architecture for Modern Web Applications: A Comprehensive Guide to Tailwind and M3
+                </h1>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 bg-secondary-container/50 text-on-secondary-container px-3 py-1.5 rounded-lg border border-outline-variant/30 w-fit">
+<span class="material-symbols-outlined text-lg" data-icon="language">language</span>
+<span class="font-label-md text-label-md">Web Platform</span>
+</div>
+<span class="text-on-surface-variant font-body-md text-body-md">·</span>
+<span class="text-on-surface-variant font-body-md text-body-md">1080p HQ</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-4 mt-stack-md px-2">
+<button class="flex-1 bg-primary hover:bg-primary-fixed text-on-primary rounded-xl py-3.5 px-4 font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] shadow-md shadow-primary/10">
+<span class="material-symbols-outlined" data-icon="download" style="font-variation-settings: 'FILL' 1;">download</span>
+                    Download
+                </button>
+<button class="flex-1 bg-transparent border-2 border-outline-variant hover:border-primary/50 text-primary hover:bg-primary/5 rounded-xl py-3.5 px-4 font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+                    Share
+                </button>
+</div>
+</section>
+<!-- Loading State Variant (Hidden by default, used for demonstration) -->
+<section class="mt-8 flex flex-col gap-stack-lg hidden opacity-50 pointer-events-none">
+<div class="relative w-full aspect-video rounded-xl overflow-hidden shimmer flex flex-col items-center justify-center gap-4">
+<div class="loader"></div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Fetching video...</span>
+</div>
+<div class="flex flex-col gap-stack-md px-2">
+<div class="h-6 w-3/4 shimmer rounded-md"></div>
+<div class="h-6 w-1/2 shimmer rounded-md"></div>
+<div class="flex gap-2 mt-2">
+<div class="h-8 w-24 shimmer rounded-lg"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Hidden on md and up) -->
+<nav class="md:hidden bg-surface-container-low dark:bg-surface-container-low text-primary dark:text-primary font-label-md text-label-md font-display-lg text-headline-lg-mobile text-primary dark:text-primary fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe bg-surface-container-low dark:bg-surface-container-low border-t-0 shadow-[0_-4px_24px_rgba(0,0,0,0.3)]">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<!-- History (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant dark:hover:bg-surface-variant transition-all active:scale-90 transition-transform duration-150 rounded-full px-5 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+</nav>
+</body></html>

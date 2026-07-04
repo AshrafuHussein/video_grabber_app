@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrabIt - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed": "#0a1f16",
+                      "tertiary": "#a5ccdf",
+                      "on-tertiary": "#073543",
+                      "primary-container": "#26a37a",
+                      "primary-fixed-dim": "#68dbae",
+                      "surface-container-low": "#191c1b",
+                      "on-primary-container": "#003121",
+                      "tertiary-fixed-dim": "#a5ccdf",
+                      "surface-tint": "#68dbae",
+                      "on-tertiary-fixed": "#001f29",
+                      "surface-variant": "#323534",
+                      "surface-container-lowest": "#0c0f0e",
+                      "surface-bright": "#373a39",
+                      "on-secondary-fixed-variant": "#364b40",
+                      "background": "#111413",
+                      "secondary": "#b4ccbd",
+                      "secondary-fixed-dim": "#b4ccbd",
+                      "surface-dim": "#111413",
+                      "inverse-primary": "#006c4e",
+                      "primary-fixed": "#86f8c9",
+                      "inverse-on-surface": "#2e3130",
+                      "error": "#ffb4ab",
+                      "surface-container-highest": "#323534",
+                      "secondary-container": "#3b5045",
+                      "primary": "#68dbae",
+                      "outline-variant": "#3d4943",
+                      "on-surface": "#e1e3e1",
+                      "tertiary-fixed": "#c1e8fb",
+                      "on-tertiary-fixed-variant": "#244c5b",
+                      "on-secondary": "#20352a",
+                      "on-error-container": "#ffdad6",
+                      "inverse-surface": "#e1e3e1",
+                      "on-primary-fixed-variant": "#00513a",
+                      "secondary-fixed": "#d0e8d9",
+                      "surface": "#111413",
+                      "outline": "#87948c",
+                      "on-background": "#e1e3e1",
+                      "on-primary": "#003827",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#282b29",
+                      "on-surface-variant": "#bccac1",
+                      "on-tertiary-container": "#002e3c",
+                      "on-primary-fixed": "#002115",
+                      "tertiary-container": "#7096a7",
+                      "on-secondary-container": "#a9c1b3",
+                      "surface-container": "#1d201f",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-tablet": "24px",
+                      "stack-xl": "24px",
+                      "margin-mobile": "16px",
+                      "stack-lg": "16px",
+                      "stack-md": "8px",
+                      "stack-sm": "4px",
+                      "gutter": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Roboto Flex"],
+                      "label-lg": ["Roboto Flex"],
+                      "body-lg": ["Roboto Flex"],
+                      "headline-lg-mobile": ["Roboto Flex"],
+                      "label-md": ["Roboto Flex"],
+                      "headline-lg": ["Roboto Flex"],
+                      "body-md": ["Roboto Flex"],
+                      "title-lg": ["Roboto Flex"]
+              },
+              "fontSize": {
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "400"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-safe">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile w-full h-16 bg-surface dark:bg-surface text-primary dark:text-primary docked full-width top-0 bg-surface-container dark:bg-surface-container flat no shadows sticky z-40">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant/50 dark:hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 text-on-surface dark:text-on-surface">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-display-lg text-headline-lg-mobile text-primary dark:text-primary tracking-tight font-extrabold">GrabIt</h1>
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant/50 dark:hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 text-on-surface dark:text-on-surface">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24 px-margin-mobile pt-stack-xl flex flex-col gap-stack-xl md:px-margin-tablet">
+<!-- Input Section -->
+<section class="flex flex-col gap-stack-lg">
+<div class="relative w-full">
+<input class="w-full bg-surface-container-high border-b-2 border-outline-variant text-on-surface font-body-lg text-body-lg px-4 py-4 rounded-t-lg focus:outline-none focus:border-primary focus:bg-surface-container-highest transition-colors pr-14 placeholder-on-surface-variant" placeholder="Paste a TikTok, Instagram, or X link here" type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="content_paste">content_paste</span>
+</button>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-4 px-6 rounded-[16px] flex items-center justify-center gap-2 hover:bg-primary-fixed-dim transition-colors active:scale-95 shadow-md shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="download" data-weight="fill">download</span>
+                Fetch Video
+            </button>
+<div class="flex justify-center gap-stack-md mt-2">
+<div class="bg-surface-container text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 opacity-70">
+<span class="material-symbols-outlined text-[18px]" data-icon="tag">tag</span> TikTok
+                </div>
+<div class="bg-surface-container text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 opacity-70">
+<span class="material-symbols-outlined text-[18px]" data-icon="photo_camera">photo_camera</span> Instagram
+                </div>
+<div class="bg-surface-container text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 opacity-70">
+<span class="material-symbols-outlined text-[18px]" data-icon="close">close</span> X
+                </div>
+</div>
+</section>
+<!-- Recent Downloads -->
+<section class="flex flex-col gap-stack-md mt-stack-lg">
+<div class="flex justify-between items-end">
+<h2 class="font-title-lg text-title-lg text-on-surface">Recent Downloads</h2>
+<button class="text-primary font-label-lg text-label-lg hover:underline">View All</button>
+</div>
+<div class="flex overflow-x-auto no-scrollbar gap-stack-md pb-4 -mx-margin-mobile px-margin-mobile snap-x snap-mandatory">
+<!-- Card 1 -->
+<div class="relative min-w-[200px] h-[300px] rounded-[16px] overflow-hidden snap-start bg-surface-container-high shadow-sm group cursor-pointer border border-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality, vertically oriented video thumbnail showing a vibrant urban street dance performance. The dancer is in mid-air, wearing bright, saturated neon streetwear that pops against the moody, dark gray concrete background of a city alley. The lighting is dramatic and directional, creating a dynamic, energetic mood suitable for a modern dark-mode media app interface. The image is crisp and clear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVWm6KBaiy9XtVnArq-jq1nnyulQYsZY1TLLij6zSwZNyLNfzTnDuMY-2s_s_t3pIhvw5afNwM0PuM59c2PL6DTHfeo3DHksj2MyaYABD8MHknQIonhR_RKxpYFD_vMuQ6LqsuR2w4WqljZUHZDs4q53wYTZBuiTtSbspmBfTlTc0Zj16pJiE5shpkWTMKW8QtCVOvyVT7fS0m9fYCjeq_NOSGG2yTuEJGTUyUyvejVn5b0TJFescnSA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
+<div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-on-surface font-label-lg text-label-lg truncate w-32 drop-shadow-md">Urban Dance...</span>
+<span class="text-on-surface-variant font-body-md text-body-md text-[12px]">TikTok • 12MB</span>
+</div>
+<div class="bg-surface/80 backdrop-blur-sm text-on-surface font-label-md text-label-md px-2 py-1 rounded-md text-[10px]">
+                            00:45
+                        </div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative min-w-[200px] h-[300px] rounded-[16px] overflow-hidden snap-start bg-surface-container-high shadow-sm group cursor-pointer border border-surface-container-highest">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality, vertically oriented video thumbnail displaying a serene coastal landscape at twilight. The scene features deep blues and subtle purples in the sky, reflecting on calm ocean waters. A minimalist, dark silhouette of a cliff edge is in the foreground. The lighting is soft and ambient, fitting perfectly into a sleek, dark-mode application aesthetic. The mood is calm and atmospheric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiV7ovtXa5UIMHCaSTPGj5A7eTXOvxQwRcfaaadJ20812BT6PK47W6JaqCd5jdaGZm2o5u19MquVFhqATYuhLFaN1PIptQjuQEsqUf5Y4zFHe52zDVvTinDe2vhpQwKixnXFd3PtqDiHhB28atLpFLQ-TRX85X5F23a6NZwo90LR2ghA01O1lyAaozPt0xxZ3p-nX38EwlQbpwMGto2ty2N3ujKD7jDoAtdqVdx2xWIMxkostl72VpQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
+<div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-on-surface font-label-lg text-label-lg truncate w-32 drop-shadow-md">Coastal Vibes</span>
+<span class="text-on-surface-variant font-body-md text-body-md text-[12px]">Instagram • 8MB</span>
+</div>
+<div class="bg-surface/80 backdrop-blur-sm text-on-surface font-label-md text-label-md px-2 py-1 rounded-md text-[10px]">
+                            01:12
+                        </div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="relative min-w-[200px] h-[300px] rounded-[16px] overflow-hidden snap-start bg-surface-container-high shadow-sm group cursor-pointer border border-surface-container-highest flex items-center justify-center flex-col gap-2">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+</div>
+<span class="text-on-surface-variant font-label-lg text-label-lg">Processing...</span>
+<!-- Progress Bar -->
+<div class="w-3/4 h-1 bg-surface-container-lowest rounded-full mt-2 overflow-hidden">
+<div class="h-full bg-primary w-2/3 rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe bg-surface-container-low dark:bg-surface-container-low border-t border-outline-variant flat no shadows rounded-t-none full-width">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1 active:scale-90 transition-transform duration-150 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform duration-150 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all font-label-md text-label-md px-5 py-1 rounded-full">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>History</span>
+</button>
+</nav>
+<!-- Desktop Side Nav (Hidden on Mobile) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-16 bottom-0 w-[240px] bg-surface-container-low border-r border-outline-variant p-4 gap-2 z-30">
+<button class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-full px-4 py-3 font-label-lg text-label-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+            Home
+        </button>
+<button class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-full px-4 py-3 font-label-lg text-label-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+            History
+        </button>
+</nav>
+</body></html>
