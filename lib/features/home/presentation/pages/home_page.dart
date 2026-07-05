@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../bloc/home_bloc.dart';
-import '../bloc/home_event.dart';
-import '../bloc/home_state.dart';
+import '../../bloc/extraction_bloc.dart';
+import '../../../history/bloc/history_bloc.dart';
 import '../widgets/download_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,12 +18,6 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _urlController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    context.read<HomeBloc>().add(FetchRecentDownloads());
-  }
-
-  @override
   void dispose() {
     _urlController.dispose();
     super.dispose();
@@ -32,22 +25,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
-        if (state is ExtractionSuccess) {
-          context.push('/preview', extra: state.videoInfo);
-        } else if (state is NeedsInstagramAuth) {
-          context.push('/instagram-login');
-        } else if (state is ExtractionFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        } else if (state is UnsupportedPlatform) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Unsupported Platform')),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ExtractionBloc, ExtractionState>(
+          listener: (context, state) {
+            if (state is ExtractionSuccess) {
+              context.push('/preview', extra: state.videoInfo);
+            } else if (state is InstagramAuthRequired) {
+              _showInstagramAuthDialog(context);
+            } else if (state is ExtractionFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            } else if (state is UnsupportedPlatform) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -73,7 +70,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Input Section
               const SizedBox(height: 8),
               Stack(
                 alignment: Alignment.centerRight,
@@ -89,17 +85,17 @@ class _HomePageState extends State<HomePage> {
                     child: IconButton(
                       icon: const Icon(Icons.content_paste, color: AppColors.onSurfaceVariant),
                       onPressed: () async {
-                      final data = await Clipboard.getData('text/plain');
-                      if (data?.text != null) {
-                        _urlController.text = data!.text!;
-                      }
-                    },
+                        final data = await Clipboard.getData('text/plain');
+                        if (data?.text != null) {
+                          _urlController.text = data!.text!;
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              BlocBuilder<HomeBloc, HomeState>(
+              BlocBuilder<ExtractionBloc, ExtractionState>(
                 builder: (context, state) {
                   return SizedBox(
                     width: double.infinity,
@@ -108,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                           ? null
                           : () {
                               if (_urlController.text.isNotEmpty) {
-                                context.read<HomeBloc>().add(ExtractRequested(_urlController.text));
+                                context.read<ExtractionBloc>().add(LinkPasted(_urlController.text));
                               }
                             },
                       icon: state is ExtractionLoading
@@ -135,7 +131,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const SizedBox(height: 32),
-              // Recent Downloads Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,41 +147,62 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const SizedBox(height: 16),
-              // Recent Downloads Horizontal List
               SizedBox(
                 height: 300,
-                child: BlocBuilder<HomeBloc, HomeState>(
-                  buildWhen: (previous, current) => current is HomeHistoryLoaded || current is HomeLoading,
+                child: BlocBuilder<HistoryBloc, HistoryState>(
                   builder: (context, state) {
-                    if (state is HomeLoading) {
+                    if (state is HistoryLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is HomeHistoryLoaded) {
-                      if (state.recentDownloads.isEmpty) {
+                    } else if (state is HistoryLoaded) {
+                      if (state.history.isEmpty) {
                         return const Center(child: Text('No recent downloads'));
                       }
                       return ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: state.recentDownloads.length,
+                        itemCount: state.history.take(5).length,
                         separatorBuilder: (context, index) => const SizedBox(width: 16),
                         itemBuilder: (context, index) {
-                          final item = state.recentDownloads[index];
+                          final item = state.history[index];
                           return DownloadCard(
                             title: item.title,
                             source: item.platform.name.toUpperCase(),
                             size: '${(item.fileSizeBytes / (1024 * 1024)).toStringAsFixed(1)} MB',
-                            duration: '00:00', // Need to store duration in record if wanted
-                            imageUrl: item.thumbnailUrl,
+                            duration: '00:00',
+                            imageUrl: item.thumbnailUrl ?? '',
                           );
                         },
                       );
                     }
-                    return const SizedBox();
+                    return const Center(child: Text('No recent downloads'));
                   },
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showInstagramAuthDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Login Required'),
+        content: const Text('Instagram requires you to be logged in to download this video. Would you like to login now?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.push('/instagram-login');
+            },
+            child: const Text('Login'),
+          ),
+        ],
       ),
     );
   }

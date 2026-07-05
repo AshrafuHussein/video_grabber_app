@@ -1,4 +1,4 @@
-part of 'instagram_auth_state.dart';
+part of 'instagram_auth_bloc.dart';
 
 abstract class InstagramAuthState extends Equatable {
   const InstagramAuthState();

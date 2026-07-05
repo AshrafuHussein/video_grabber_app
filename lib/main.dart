@@ -5,26 +5,34 @@ import 'package:dio/dio.dart';
 import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
 import 'core/utils/share_intent_handler.dart';
-import 'features/home/data/datasources/extraction_platform_data_source.dart';
-import 'features/home/data/datasources/video_download_data_source.dart';
-import 'features/home/data/repositories/extraction_repository_impl.dart';
-import 'features/home/data/repositories/download_repository_impl.dart';
-import 'features/home/domain/usecases/extract_video_info.dart';
-import 'features/home/domain/usecases/detect_platform.dart';
-import 'features/home/domain/usecases/download_video.dart';
-import 'features/history/data/repositories/history_repository_impl.dart';
-import 'features/history/data/models/download_record_model.dart';
-import 'features/history/domain/usecases/get_history.dart';
-import 'features/history/domain/usecases/save_history.dart';
-import 'features/settings/data/repositories/settings_repository_impl.dart';
-import 'core/data/datasources/cookie_storage_data_source.dart';
-import 'core/data/repositories/cookie_repository_impl.dart';
-import 'features/home/presentation/bloc/home_bloc.dart';
-import 'features/home/presentation/bloc/home_event.dart';
-import 'features/preview/presentation/bloc/preview_bloc.dart';
-import 'features/history/presentation/bloc/history_bloc.dart';
-import 'features/settings/presentation/bloc/settings_bloc.dart';
-import 'features/settings/presentation/bloc/instagram_auth_bloc.dart';
+
+// Data Sources
+import 'data/data_sources/extraction_platform_data_source.dart';
+import 'data/data_sources/video_download_data_source.dart';
+import 'data/data_sources/history_local_data_source.dart';
+import 'data/data_sources/settings_local_data_source.dart';
+import 'data/data_sources/cookie_storage_data_source.dart';
+
+// Models
+import 'data/models/download_record_model.dart';
+
+// Repositories
+import 'data/repositories/extraction_repository_impl.dart';
+import 'data/repositories/download_repository_impl.dart';
+import 'data/repositories/history_repository_impl.dart';
+import 'data/repositories/settings_repository_impl.dart';
+
+// Use Cases
+import 'domain/use_cases/extract_video_info.dart';
+import 'domain/use_cases/detect_platform.dart';
+import 'domain/use_cases/download_video.dart';
+
+// Blocs
+import 'features/home/bloc/extraction_bloc.dart';
+import 'features/preview/bloc/preview_bloc.dart';
+import 'features/history/bloc/history_bloc.dart';
+import 'features/settings/bloc/settings_bloc.dart';
+import 'features/instagram_auth/bloc/instagram_auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,14 +46,15 @@ void main() async {
   // Data Sources
   final extractionDS = ExtractionPlatformDataSourceImpl();
   final downloadDS = VideoDownloadDataSourceImpl(dio);
+  final historyDS = HistoryLocalDataSourceImpl();
+  final settingsDS = SettingsLocalDataSourceImpl();
   final cookieDS = CookieStorageDataSourceImpl();
   
   // Repositories
   final extractionRepo = ExtractionRepositoryImpl(extractionDS);
   final downloadRepo = DownloadRepositoryImpl(downloadDS);
-  final historyRepo = HistoryRepositoryImpl();
-  final settingsRepo = SettingsRepositoryImpl();
-  final cookieRepo = CookieRepositoryImpl(cookieDS);
+  final historyRepo = HistoryRepositoryImpl(historyDS);
+  final settingsRepo = SettingsRepositoryImpl(settingsDS);
 
   runApp(
     GrabItApp(
@@ -53,17 +62,17 @@ void main() async {
       downloadRepo: downloadRepo,
       historyRepo: historyRepo,
       settingsRepo: settingsRepo,
-      cookieRepo: cookieRepo,
+      cookieStorage: cookieDS,
     ),
   );
 }
 
-class GrabItApp extends StatefulWidget {
+class GrabItApp extends StatelessWidget {
   final ExtractionRepositoryImpl extractionRepo;
   final DownloadRepositoryImpl downloadRepo;
   final HistoryRepositoryImpl historyRepo;
   final SettingsRepositoryImpl settingsRepo;
-  final CookieRepositoryImpl cookieRepo;
+  final CookieStorageDataSource cookieStorage;
 
   const GrabItApp({
     super.key,
@@ -71,77 +80,54 @@ class GrabItApp extends StatefulWidget {
     required this.downloadRepo,
     required this.historyRepo,
     required this.settingsRepo,
-    required this.cookieRepo,
+    required this.cookieStorage,
   });
 
   @override
-  State<GrabItApp> createState() => _GrabItAppState();
-}
-
-class _GrabItAppState extends State<GrabItApp> {
-  late final HomeBloc _homeBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _homeBloc = HomeBloc(
-      extractVideoInfo: ExtractVideoInfo(widget.extractionRepo),
-      detectPlatform: DetectPlatform(widget.extractionRepo),
-      getHistory: GetHistory(widget.historyRepo),
-      cookieRepository: widget.cookieRepo,
-    );
-
-    // Initialize Share Intent Handler
-    ShareIntentHandler.init(onUrlReceived: (url) {
-      _homeBloc.add(ExtractRequested(url));
-    });
-  }
-
-  @override
-  void dispose() {
-    ShareIntentHandler.dispose();
-    _homeBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider.value(value: widget.extractionRepo),
-        RepositoryProvider.value(value: widget.downloadRepo),
-        RepositoryProvider.value(value: widget.historyRepo),
-        RepositoryProvider.value(value: widget.settingsRepo),
-        RepositoryProvider.value(value: widget.cookieRepo),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: _homeBloc),
-          BlocProvider(
-            create: (context) => PreviewBloc(
-              downloadVideo: DownloadVideo(widget.downloadRepo),
-              saveHistory: SaveHistory(widget.historyRepo),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => HistoryBloc(
-              getHistory: GetHistory(widget.historyRepo),
-              repository: widget.historyRepo,
-            ),
-          ),
-          BlocProvider(
-            create: (context) => SettingsBloc(widget.settingsRepo),
-          ),
-          BlocProvider(
-            create: (context) => InstagramAuthBloc(widget.cookieRepo),
-          ),
-        ],
-        child: MaterialApp.router(
-          title: 'GrabIt',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.darkTheme,
-          routerConfig: AppRouter.router,
+        BlocProvider(
+          create: (context) {
+            final bloc = ExtractionBloc(
+              extractVideoInfo: ExtractVideoInfo(extractionRepo),
+              detectPlatform: DetectPlatform(extractionRepo),
+              cookieStorage: cookieStorage,
+            );
+            // Initialize Share Intent Handler
+            ShareIntentHandler(bloc).init();
+            return bloc;
+          },
         ),
+        BlocProvider(
+          create: (context) => PreviewBloc(
+            downloadVideo: DownloadVideo(downloadRepo),
+            downloadRepository: downloadRepo,
+            historyRepository: historyRepo,
+            settingsRepository: settingsRepo,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => HistoryBloc(
+            repository: historyRepo,
+          )..add(HistoryRequested()),
+        ),
+        BlocProvider(
+          create: (context) => SettingsBloc(
+            repository: settingsRepo,
+          )..add(SettingsRequested()),
+        ),
+        BlocProvider(
+          create: (context) => InstagramAuthBloc(
+            cookieStorage: cookieStorage,
+          ),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'GrabIt',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.darkTheme,
+        routerConfig: AppRouter.router,
       ),
     );
   }

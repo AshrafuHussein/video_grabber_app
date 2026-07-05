@@ -21,7 +21,7 @@ class DownloadRecordModelAdapter extends TypeAdapter<DownloadRecordModel> {
       title: fields[1] as String,
       platform: fields[2] as String,
       localFilePath: fields[3] as String,
-      thumbnailUrl: fields[4] as String,
+      thumbnailUrl: fields[4] as String?,
       fileSizeBytes: fields[5] as int,
       downloadedAt: fields[6] as DateTime,
     );

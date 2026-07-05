@@ -4,11 +4,11 @@ import json
 def extract(url, cookie_path=None):
     ydl_opts = {
         'quiet': True,
+        'no_warnings': True,
         'format': 'best',
         'noplaylist': True,
         'socket_timeout': 30,
         'retries': 5,
-        'nocheckcertificate': True,
     }
 
     if cookie_path:
@@ -18,22 +18,24 @@ def extract(url, cookie_path=None):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
 
-            # Identify platform
+            # Detect platform
             platform = "unknown"
             if "tiktok.com" in url:
                 platform = "tiktok"
             elif "instagram.com" in url:
                 platform = "instagram"
-            elif "twitter.com" in url or "x.com" in url:
-                platform = "x"
+            elif "x.com" in url or "twitter.com" in url:
+                platform = "twitter"
 
-            return {
-                "title": info.get('title', 'Video'),
-                "thumbnail": info.get('thumbnail', ''),
-                "direct_url": info.get('url', ''),
-                "ext": info.get('ext', 'mp4'),
-                "duration": info.get('duration', 0),
-                "platform": platform
+            result = {
+                "title": info.get('title', 'No Title'),
+                "thumbnail": info.get('thumbnail'),
+                "direct_url": info.get('url'),
+                "ext": info.get('ext'),
+                "duration": info.get('duration'),
+                "platform": platform,
+                "http_headers": info.get('http_headers', {})
             }
+            return result
     except Exception as e:
         return {"error": str(e)}

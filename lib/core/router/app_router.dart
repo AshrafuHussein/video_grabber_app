@@ -4,8 +4,8 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/history/presentation/pages/history_page.dart';
 import '../../features/preview/presentation/pages/preview_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
-import '../../features/settings/presentation/pages/instagram_login_page.dart';
-import '../../features/home/domain/entities/video_info.dart';
+import '../../features/instagram_auth/presentation/pages/instagram_login_page.dart';
+import '../../domain/entities/video_info.dart';
 import '../widgets/main_wrapper.dart';
 
 class AppRouter {

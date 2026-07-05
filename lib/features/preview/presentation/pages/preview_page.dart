@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
-import '../../../home/domain/entities/video_info.dart';
-import '../bloc/preview_bloc.dart';
-import '../bloc/preview_event.dart';
-import '../bloc/preview_state.dart';
+import '../../../../domain/entities/video_info.dart';
+import '../../bloc/preview_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class PreviewPage extends StatefulWidget {
@@ -22,10 +20,14 @@ class _PreviewPageState extends State<PreviewPage> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoInfo.directUrl))
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.play();
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(widget.videoInfo.directUrl),
+      httpHeaders: widget.videoInfo.httpHeaders,
+    )..initialize().then((_) {
+        if (mounted) {
+          setState(() {});
+          _controller.play();
+        }
       });
   }
 
@@ -45,7 +47,7 @@ class _PreviewPageState extends State<PreviewPage> {
         listener: (context, state) {
           if (state is DownloadComplete) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Download Complete: ${state.localPath}')),
+              const SnackBar(content: Text('Download Complete')),
             );
           } else if (state is DownloadFailed) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -60,7 +62,24 @@ class _PreviewPageState extends State<PreviewPage> {
                 if (_controller.value.isInitialized)
                   AspectRatio(
                     aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        VideoPlayer(_controller),
+                        IconButton(
+                          icon: Icon(
+                            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                            size: 64,
+                            color: Colors.white.withAlpha(128),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _controller.value.isPlaying ? _controller.pause() : _controller.play();
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   )
                 else
                   const AspectRatio(
@@ -79,7 +98,7 @@ class _PreviewPageState extends State<PreviewPage> {
                       const SizedBox(height: 8),
                       Text(
                         'Platform: ${widget.videoInfo.platform.name.toUpperCase()}',
-                        style: TextStyle(color: AppColors.onSurfaceVariant),
+                        style: const TextStyle(color: AppColors.onSurfaceVariant),
                       ),
                       const SizedBox(height: 24),
                       if (state is Downloading)
@@ -95,7 +114,7 @@ class _PreviewPageState extends State<PreviewPage> {
                           width: double.infinity,
                           child: FilledButton.icon(
                             onPressed: () {
-                              context.read<PreviewBloc>().add(StartDownload(widget.videoInfo));
+                              context.read<PreviewBloc>().add(DownloadRequested(widget.videoInfo));
                             },
                             icon: const Icon(Icons.download),
                             label: const Text('Download to Gallery'),

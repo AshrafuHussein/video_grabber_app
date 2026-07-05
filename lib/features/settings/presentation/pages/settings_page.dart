@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../bloc/settings_bloc.dart';
+import '../../bloc/settings_bloc.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SettingsBloc>().add(LoadSettings());
+    context.read<SettingsBloc>().add(SettingsRequested());
   }
 
   @override
@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: Switch(
                     value: state.settings.autoSaveToGallery,
                     onChanged: (value) {
-                      context.read<SettingsBloc>().add(ToggleAutoSave(value));
+                      context.read<SettingsBloc>().add(AutoSaveToggled(value));
                     },
                   ),
                 ),
