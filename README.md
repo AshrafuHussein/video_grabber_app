@@ -87,6 +87,8 @@ flutter build apk
 
 Contributions are welcome. If you want to improve the UI, add support for more platforms, or refine the download experience, feel free to open an issue or submit a pull request.
 
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before getting started.
+
 ## License
 
-A license file has not been added yet. If you plan to distribute this project, consider adding an appropriate open-source license.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
